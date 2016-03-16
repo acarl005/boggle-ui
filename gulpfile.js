@@ -12,7 +12,7 @@ var rename = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('default', ['scripts:dev', 'sass:dev', 'sass:watch', 'serve']);
-gulp.task('build', ['scripts, sass']);
+gulp.task('build', ['scripts', 'sass']);
 gulp.task('scripts', () => build(false));
 gulp.task('scripts:dev', () => build(true));
 gulp.task('sass', sass);

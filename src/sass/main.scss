@@ -1,11 +1,21 @@
 @import 'buttons';
 
 
-#board {
-  width: 400px;
+body {
+  background-color: #FF913B;
 }
 
-button.letter {
+#board {
+  width: 420px;
+  padding: 10px;
+  box-shadow: 0 0 0 1px #417fbd inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #4D5BBE, 0 8px 8px 1px rgba(0,0,0,0.5);
+  background-color:#4274D7;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.btn3d.btn-white.letter {
+  color: #1f4288;
   font-size: 60px;
   width: 96px;
   height: 90px;

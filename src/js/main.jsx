@@ -1,31 +1,52 @@
 window.jQuery = window.$ = require('jquery');
+var React = require('react');
+var ReactDOM = require('react-dom');
 var io = require('socket.io-client');
 var qs = require('querystring');
 
 var socket = io();
 
-function Game(letters) {
-  this.letters = letters;
-  this.start = new Date;
-}
-Game.prototype.has = function(y, x) {
-  return x >= 0 && x < 4 && y >= 0 && y < 4;
-};
+var Controls = require('./components/controls');
+var Board = require('./components/board');
+var Scores = require('./components/scores');
 
-var game;
-var $board = $('#board');
+var Game = React.createClass({
+  getInitialState: function() {
+    return {
+      letters: '',
+      start: null,
+    };
+  },
+  has: function(y, x) {
+    return x >= 0 && x < 4 && y >= 0 && y < 4;
+  },
+  render: function() {
+    return (
+      <div className="row">
+        <div className="col-md-6">
+          <Controls { ...this.state } />
+          <Board { ...this.state } />
+        </div>
+        <div className="col-md-6">
+          <Scores { ...this.state } />
+        </div>
+      </div>
+    );
+  }
+});
 
+
+ReactDOM.render(<Game />, document.getElementById('content'));
 // make buttons for board
-for (var i = 0; i < 16; i++) {
-  $board.append('<button class="btn btn3d btn-white letter" data-row="'+ Math.floor(i / 4) +'" data-col="'+ i % 4 +'">')
-}
+
 
 
 $('#start').on('click', start);
-// start();
+start();
 $('#word-input').on('keyup', checkIfInBoard);
 $('#word-input').on('keypress', validate);
 $('#word-form').on('submit', checkIfWord);
+$('button.letter').on('click', insertLetter);
 
 function start(e) {
   var query = qs.parse(location.search.slice(1));
@@ -128,6 +149,13 @@ function fillDOMBoard() {
   $board.find('button').each(function() {
     this.innerText = game.letters[this.getAttribute('data-row')][this.getAttribute('data-col')];
   });
+}
+
+function insertLetter(e) {
+  var char = e.target.innerText;
+  var $input = $('#word-input');
+  $input[0].value += char;
+  $input.trigger('keyup');
 }
 
 function populatePercentageBars() {

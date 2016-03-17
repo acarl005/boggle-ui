@@ -5,15 +5,19 @@ var server = http.Server(app);
 var io = require('socket.io')(server);
 var Boggle = require('solve-boggle');
 
-io.on('connection', function(socket){
+io.on('connection', socket => {
   console.log('a user connected');
-  socket.on('disconnect', function(){
+  socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('start', function(letters){
+  socket.on('error', err => {
+    console.error(err);
+    socket.destroy();
+  });
+  socket.on('start', letters => {
     socket.boggle = new Boggle(letters ? letters : undefined);
-    io.emit('letters', socket.boggle.board);
-    socket.boggle.solve(function(words) {
+    io.emit('letters', socket.boggle.board.map(arr => arr.join('')).join(''));
+    socket.boggle.solve(words => {
       io.emit('solution', words);
     });
   });

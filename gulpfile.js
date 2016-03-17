@@ -22,11 +22,11 @@ gulp.task('serve', serve);
 
 function build(development) {
   var props = {
-    entries: ['src/js/main.js'],
+    entries: ['src/js/main.jsx'],
     extensions: ['.jsx'],
     transform: [
-      ['babelify', { presets: ['react', 'es2015']}];
-    ]
+      ['babelify', { presets: ['react', 'es2015'] }]
+    ],
     debug: development,
   };
 

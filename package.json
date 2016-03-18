@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/acarl005/boggle-ui#readme",
   "dependencies": {
+    "compression": "^1.6.1",
     "jquery": "^2.2.1",
     "react": "^0.14.7",
     "react-addons-update": "^0.14.7",

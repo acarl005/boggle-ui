@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var http = require('http');
+var compress = require('compression');
 var server = http.Server(app);
 var io = require('socket.io')(server);
 var Boggle = require('solve-boggle');
@@ -23,6 +24,7 @@ io.on('connection', socket => {
   });
 });
 
+app.use(compress());
 app.use(express.static(__dirname));
 
 var port = process.env.PORT || 3000;

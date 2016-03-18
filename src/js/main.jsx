@@ -1,5 +1,6 @@
 window.jQuery = window.$ = require('jquery');
 var React = require('react');
+var update = require('react-addons-update');
 var ReactDOM = require('react-dom');
 var io = require('socket.io-client');
 var qs = require('querystring');
@@ -16,7 +17,7 @@ var Game = React.createClass({
     return {
       letters: '',
       selected: '',
-      words: [],
+      words: null,
       found: [],
       start: null,
     };
@@ -26,11 +27,18 @@ var Game = React.createClass({
     this.setState({ selected });
   },
 
+  pushFound: function(newWord) {
+    var newState = update(this.state, {
+      found: { $push: [newWord] }
+    });
+    this.setState(newState);
+  },
+
   componentWillMount: function() {
     var query = qs.parse(location.search.slice(1));
     socket.emit('start', query.board);
     socket.on('letters', letters => this.setState({ letters }));
-    socket.on('solution', words => this.setState({ words }));
+    socket.on('solution', words => this.setState({ words: new Set(words) }));
   },
 
   render: function() {
@@ -38,7 +46,7 @@ var Game = React.createClass({
       <div className="row">
         <div className="col-md-6">
           <Controls { ...this.state } />
-          <Board { ...this.state } setSelected={this.setSelected} />
+          <Board { ...this.state } setSelected={this.setSelected} pushFound={this.pushFound} />
         </div>
         <div className="col-md-6">
           <Scores { ...this.state } />
@@ -51,10 +59,6 @@ var Game = React.createClass({
 
 
 ReactDOM.render(<Game />, document.getElementById('content'));
-// make buttons for board
-
-
-
 
 
 // function validate(e) {

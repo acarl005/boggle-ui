@@ -3,9 +3,19 @@ var $board;
 
 var Board = React.createClass({
 
-  inputChange: function(e) {
+  selectWord: function(e) {
     var selected = e.target.value;
     this.props.setSelected(selected);
+  },
+
+  checkIfWordInBoard: function(e) {
+    e.preventDefault();
+    var word = e.target.word.value.toUpperCase();
+    if (this.props.words.has(word)) {
+      e.target.word.value = '';
+      this.props.pushFound(word);
+      this.props.setSelected('');
+    }
   },
 
   componentDidMount: function() {
@@ -17,12 +27,20 @@ var Board = React.createClass({
     pressSelection(props.selected);
   },
 
+  pushLetter: function(e) {
+    var char = e.target.innerText;
+    var input = document.getElementById('word-input');
+    input.value += char;
+    var event = new Event('input', { bubbles: true });
+    input.dispatchEvent(event);
+  },
+
   render: function() {
     var buttons = [];
     for (var i = 0; i < 16; i++) {
       buttons.push(
         <button className="btn btn3d btn-white letter" key={i}
-                data-row={Math.floor(i / 4)} data-col={i % 4}>
+                data-row={Math.floor(i / 4)} data-col={i % 4} onClick={this.pushLetter}>
           {this.props.letters[i]}
         </button>
       );
@@ -32,8 +50,8 @@ var Board = React.createClass({
         <div id="board">
           { buttons }
         </div>
-        <form id="word-form">
-          <input id="word-input" type="text" name="word" pattern="[a-zA-Z]+" onChange={this.inputChange} />
+        <form id="word-form" onSubmit={this.checkIfWordInBoard}>
+          <input id="word-input" type="text" name="word" pattern="[a-zA-Z]+" onChange={this.selectWord} />
         </form>
       </div>
     );

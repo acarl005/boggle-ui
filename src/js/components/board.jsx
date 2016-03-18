@@ -1,20 +1,33 @@
-var React = require('react');
-var $board;
+const React = require('react');
+let $board;
 
-var Board = React.createClass({
+const Board = React.createClass({
 
   selectWord: function(e) {
-    var selected = e.target.value;
+    let selected = e.target.value;
     this.props.setSelected(selected);
   },
 
   checkIfWordInBoard: function(e) {
     e.preventDefault();
-    var word = e.target.word.value.toUpperCase();
+    let word = e.target.word.value.toUpperCase();
     if (this.props.words.has(word)) {
       e.target.word.value = '';
       this.props.pushFound(word);
       this.props.setSelected('');
+    }
+  },
+
+  validateKey: function(e) {
+    if (!e.key.match(/[a-z]/i)) {
+      e.preventDefault();
+    }
+  },
+
+  checkIfEnter: function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.refs.form.dispatchEvent(new Event("submit"));
     }
   },
 
@@ -28,20 +41,20 @@ var Board = React.createClass({
   },
 
   pushLetter: function(e) {
-    var char = e.target.innerText;
-    var input = document.getElementById('word-input');
+    let char = e.target.innerText;
+    let input = document.getElementById('word-input');
     input.value += char;
-    var event = new Event('input', { bubbles: true });
+    let event = new Event('input', { bubbles: true });
     input.dispatchEvent(event);
   },
 
   render: function() {
-    var buttons = [];
-    for (var i = 0; i < 16; i++) {
+    let buttons = [];
+    for (let i = 0; i < 16; i++) {
       buttons.push(
-        <button className="btn btn3d btn-white letter" key={i}
+        <button className="btn btn3d btn-white letter" key={i} onKeyPress={this.checkIfEnter}
                 data-row={Math.floor(i / 4)} data-col={i % 4} onClick={this.pushLetter}>
-          {this.props.letters[i]}
+          { this.props.letters[i] === 'Q' ? 'Qu' : this.props.letters[i] }
         </button>
       );
     }
@@ -50,8 +63,9 @@ var Board = React.createClass({
         <div id="board">
           { buttons }
         </div>
-        <form id="word-form" onSubmit={this.checkIfWordInBoard}>
-          <input id="word-input" type="text" name="word" pattern="[a-zA-Z]+" onChange={this.selectWord} />
+        <form id="word-form" onSubmit={this.checkIfWordInBoard} ref="form">
+          <input id="word-input" type="text" name="word" pattern="[a-zA-Z]+"
+                 onChange={this.selectWord} onKeyPress={this.validateKey} />
         </form>
       </div>
     );
@@ -60,23 +74,24 @@ var Board = React.createClass({
 });
 
 function pressSelection(target) {
-  target = target.toUpperCase();
-  var visited = [
+  target = target.toUpperCase().replace('QU', 'Q');
+  let visited = [
     [false, false, false, false],
     [false, false, false, false],
     [false, false, false, false],
     [false, false, false, false],
   ];
-  for (var y = 0; y < 4; y++) {
-    for (var x = 0; x < 4; x++) {
+  for (let y = 0; y < 4; y++) {
+    for (let x = 0; x < 4; x++) {
       search(y, x, '', [], 0);
     }
   }
 
   function search(y, x, word, path, depth) {
-    var $button = $board.find('[data-row='+ y +'][data-col='+ x + ']');
+    let $button = $board.find('[data-row='+ y +'][data-col='+ x + ']');
     path = path.concat($button[0]);
-    var nextChar = $button.text();
+    let nextChar = $button.text();
+    nextChar = nextChar === 'Qu' ? 'Q' : nextChar;
     word += nextChar;
     if (depth === target.length - 1) {
       return word === target ? highlight(path) : false;

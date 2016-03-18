@@ -1,10 +1,12 @@
-var express = require('express');
-var app = express();
-var http = require('http');
-var compress = require('compression');
-var server = http.Server(app);
-var io = require('socket.io')(server);
-var Boggle = require('solve-boggle');
+'use strict';
+
+const express = require('express');
+const app = express();
+const http = require('http');
+const compress = require('compression');
+const server = http.Server(app);
+const io = require('socket.io')(server);
+const Boggle = require('solve-boggle');
 
 io.on('connection', socket => {
   console.log('a user connected');
@@ -27,5 +29,5 @@ io.on('connection', socket => {
 app.use(compress());
 app.use(express.static(__dirname));
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 server.listen(port, console.log.bind(console, 'listening at http://localhost:' + port));

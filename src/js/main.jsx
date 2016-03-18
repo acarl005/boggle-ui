@@ -1,24 +1,24 @@
 window.jQuery = window.$ = require('jquery');
-var React = require('react');
-var update = require('react-addons-update');
-var ReactDOM = require('react-dom');
-var io = require('socket.io-client');
-var qs = require('querystring');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const io = require('socket.io-client');
+const qs = require('querystring');
+const Immutable = require('immutable');
 
-var socket = io();
+const socket = io();
 
-var Controls = require('./components/controls');
-var Board = require('./components/board');
-var Scores = require('./components/scores');
+const Controls = require('./components/controls');
+const Board = require('./components/board');
+const Scores = require('./components/scores');
 
-var Game = React.createClass({
+const Game = React.createClass({
 
   getInitialState: function() {
     return {
       letters: '',
       selected: '',
-      words: null,
-      found: [],
+      words: Immutable.Set(),
+      found: Immutable.Set(),
       start: null,
     };
   },
@@ -28,17 +28,15 @@ var Game = React.createClass({
   },
 
   pushFound: function(newWord) {
-    var newState = update(this.state, {
-      found: { $push: [newWord] }
-    });
-    this.setState(newState);
+    var newFound = this.state.found.add(newWord);
+    this.setState({ found: newFound });
   },
 
   componentWillMount: function() {
-    var query = qs.parse(location.search.slice(1));
+    let query = qs.parse(location.search.slice(1));
     socket.emit('start', query.board);
     socket.on('letters', letters => this.setState({ letters }));
-    socket.on('solution', words => this.setState({ words: new Set(words) }));
+    socket.on('solution', words => this.setState({ words: Immutable.Set(words) }));
   },
 
   render: function() {

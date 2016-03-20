@@ -4,9 +4,9 @@
   "description": "Modern web app for playing Boggle",
   "main": "main.js",
   "scripts": {
-    "start": "gulp",
-    "build": "export NODE_ENV=production; gulp build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "start-dev": "gulp",
+    "build": "export NODE_ENV=production; gulp build"
   },
   "repository": {
     "type": "git",

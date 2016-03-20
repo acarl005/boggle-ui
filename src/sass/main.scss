@@ -21,13 +21,25 @@ body {
   height: 90px;
 }
 
-.btn3d.btn-white.letter:focus {
-  box-shadow:0 0 0 1px #d79a47 inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #D79A34, 0 8px 8px 1px rgba(0,0,0,0.5);
-  background-color:#FEAF20;
-  color: white;
-}
 .btn3d.btn-white.letter:active, .btn3d.btn-white.letter.active {
   box-shadow:0 0 0 1px #ebebeb inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 1px 3px 1px rgba(0,0,0,.1);
-  background: linear-gradient(#fff 30%, #ccc 99%);
+  // background: linear-gradient(#fff 30%, #ccc 99%);
+  background: #eee;
   color: #1f4288;
+}
+
+.controls {
+  position: relative;
+  height: 80px;
+  max-width: 450px;
+}
+
+.clock {
+  display: inline-block;
+  position: absolute;
+  right: 40px;
+}
+
+.score-card {
+  line-height: 150%;
 }

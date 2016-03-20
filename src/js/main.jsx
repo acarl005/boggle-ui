@@ -20,6 +20,7 @@ const Game = React.createClass({
       words: Immutable.Set(),
       found: Immutable.Set(),
       start: null,
+      finished: true,
     };
   },
 
@@ -32,21 +33,33 @@ const Game = React.createClass({
     this.setState({ found: newFound });
   },
 
-  componentWillMount: function() {
+  startGame: function() {
     let query = qs.parse(location.search.slice(1));
     socket.emit('start', query.board);
+    this.setState({ start: Date.now(), found: Immutable.Set(), finished: false });
+  },
+
+  setFinished: function(finished) {
+    console.log('setting finished to', finished);
+    this.setState({ finished });
+  },
+
+  componentWillMount: function() {
     socket.on('letters', letters => this.setState({ letters }));
-    socket.on('solution', words => this.setState({ words: Immutable.Set(words) }));
+    socket.on('solution', words => {
+      this.setState({ words: Immutable.Set(words) })
+      console.log(words);
+    });
   },
 
   render: function() {
     return (
       <div className="row">
-        <div className="col-md-6">
-          <Controls { ...this.state } />
+        <div className="col-md-6 col-sm-7">
+          <Controls { ...this.state } startGame={this.startGame} setFinished={this.setFinished} />
           <Board { ...this.state } setSelected={this.setSelected} pushFound={this.pushFound} />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 col-sm-5">
           <Scores { ...this.state } />
         </div>
       </div>
@@ -57,39 +70,3 @@ const Game = React.createClass({
 
 
 ReactDOM.render(<Game />, document.getElementById('content'));
-
-
-// function validate(e) {
-//   if (e.keyCode === 13) return; // press enter to submit form
-//   var char = String.fromCharCode(e.charCode);
-//   if (!char.match(/[a-z]/i)) { // prevent them from entering things that aren't letters
-//     e.preventDefault();
-//   }
-// }
-//
-// function checkIfWord(e) {
-//   e.preventDefault();
-//   var word = e.target.word.value.toUpperCase();
-//   var index = game.words.indexOf(word);
-//   if (index !== -1) {
-//     addWord(word);
-//     game.words.splice(index, 1);
-//   }
-// }
-//
-// function addWord(word) {
-//   $('<p/>', { text: word }).appendTo('.words');
-//   $('#word-input').val('');
-// }
-
-
-// function insertLetter(e) {
-//   var char = e.target.innerText;
-//   var $input = $('#word-input');
-//   $input[0].value += char;
-//   $input.trigger('keyup');
-// }
-//
-// function populatePercentageBars() {
-//   console.log(game.words);
-// }

@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "gulp",
+    "build": "export NODE_ENV=production; gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -9,19 +9,24 @@ const ScoreCard = require('./score-card');
 const Scores = React.createClass({
 
   shouldComponentUpdate: function(props) {
-    return this.props.words.size !== props.words.size || !is(this.props.found, props.found);
+    return this.props.words.size !== props.words.size ||
+           !is(this.props.found, props.found) ||
+           this.props.finished !== props.finished;
   },
 
   render: function() {
-    let wordGroups = _.groupBy([...this.props.found], word => Math.min(word.length, 8));
+    let foundGroups = _.groupBy([...this.props.found], word => Math.min(word.length, 8));
+    let wordGroups = _.groupBy([...this.props.words], word => Math.min(word.length, 8));
     let scoreCards = [];
     let score = 0;
     for (let len in wordGroups) {
-      score += points[len] * wordGroups[len].length;
-      scoreCards.push(<ScoreCard len={len} key={len} found={wordGroups[len]} />);
+      if (foundGroups[len]) {
+        score += points[len] * foundGroups[len].length;
+      }
+      scoreCards.push(<ScoreCard len={len} key={len} found={foundGroups[len] || []} words={wordGroups[len]} finished={this.props.finished}/>);
     }
     return (
-      <div className="col-md-6">
+      <div>
         <h4>Score: { score }</h4>
         { scoreCards }
       </div>

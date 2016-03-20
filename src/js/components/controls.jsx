@@ -16,7 +16,7 @@ const Controls = React.createClass({
       button = (
         <button id="start" className="btn btn3d btn-danger btn-lg" onClick={() => this.props.setFinished(true)}>
           <span className="glyphicon glyphicon-time"></span>
-          {' '}Stop
+          {' '}Answers
         </button>
       );
     }

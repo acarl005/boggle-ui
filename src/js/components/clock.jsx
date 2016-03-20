@@ -9,9 +9,11 @@ const Clock = React.createClass({
   },
 
   componentDidUpdate: function() {
-    if (!this.props.start || pid || this.props.finished) return;
-    if (this.state.remaining <= 0) {
+    if (!this.props.start || pid) return;
+    if (this.props.finished) {
       this.setState({ remaining: 180000 });
+    }
+    if (this.state.remaining <= 0) {
       this.props.setFinished(true);
       return pid = null;
     }

@@ -1,5 +1,5 @@
 @import 'buttons';
-
+@import 'animate';
 
 body {
   background-color: #FF913B;
@@ -11,7 +11,18 @@ body {
   box-shadow: 0 0 0 1px #417fbd inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 #4D5BBE, 0 8px 8px 1px rgba(0,0,0,0.5);
   background-color:#4274D7;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
+}
+
+.board-wrap {
+  text-align: center;
+}
+
+#word-form {
+  position: relative;
+  top: 20px;
+  width: 300px;
+  margin: 0 auto;
 }
 
 .btn3d.btn-white.letter {
@@ -31,15 +42,50 @@ body {
 .controls {
   position: relative;
   height: 80px;
-  max-width: 450px;
+  max-width: 420px;
+  margin: 0 auto;
+  .btn3d {
+    margin-top: 20px;
+    width: 150px;
+  }
 }
 
 .clock {
   display: inline-block;
   position: absolute;
-  right: 40px;
+  right: 1px;
+  top: 4px;
 }
 
 .score-card {
   line-height: 150%;
+  .panel-body {
+    padding-top: 0;
+  }
+}
+
+.input-group-addon.primary {
+  color: rgb(255, 255, 255);
+  background-color: rgb(50, 118, 177);
+  border-color: rgb(40, 94, 142);
+}
+.input-group-addon.success {
+  color: rgb(255, 255, 255);
+  background-color: rgb(92, 184, 92);
+  border-color: rgb(76, 174, 76);
+}
+.input-group-addon.info {
+  color: rgb(255, 255, 255);
+  background-color: rgb(57, 179, 215);
+  border-color: rgb(38, 154, 188);
+}
+.input-group-addon.warning {
+  color: rgb(255, 255, 255);
+  background-color: rgb(240, 173, 78);
+  border-color: rgb(238, 162, 54);
+}
+.input-group-addon.danger {
+  color: rgb(255, 255, 255);
+  background-color: rgb(217, 83, 79);
+  border-color: rgb(212, 63, 58);
 }

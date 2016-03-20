@@ -40,16 +40,13 @@ const Game = React.createClass({
   },
 
   setFinished: function(finished) {
-    console.log('setting finished to', finished);
+    if (finished)
     this.setState({ finished });
   },
 
   componentWillMount: function() {
     socket.on('letters', letters => this.setState({ letters }));
-    socket.on('solution', words => {
-      this.setState({ words: Immutable.Set(words) })
-      console.log(words);
-    });
+    socket.on('solution', words => this.setState({ words: Immutable.Set(words) }));
   },
 
   render: function() {
@@ -60,7 +57,7 @@ const Game = React.createClass({
           <Board { ...this.state } setSelected={this.setSelected} pushFound={this.pushFound} />
         </div>
         <div className="col-md-6 col-sm-5">
-          <Scores { ...this.state } />
+          <Scores { ...this.state } setSelected={this.setSelected} />
         </div>
       </div>
     );

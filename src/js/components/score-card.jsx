@@ -5,19 +5,21 @@ const ScoreCard = React.createClass({
   render: function() {
     let foundLabels = [];
     this.props.found.forEach((word, i) => {
-      foundLabels.push(<span className="label label-warning" key={i}>{ word }</span>, ' ');
+      foundLabels.push(<span className="label label-warning" key={i} onMouseEnter={() => this.props.setSelected(word)}
+                             onMouseLeave={() => this.props.setSelected('')}>{ word }</span>, ' ');
     });
     let wordLabels = [];
     if (this.props.finished) {
       this.props.words.forEach((word, i) => {
         if (this.props.found.indexOf(word) === -1) {
-          wordLabels.push(<span className="label label-default" key={i}>{ word }</span>, ' ');
+          wordLabels.push(<span className="label label-default" key={i} onMouseEnter={() => this.props.setSelected(word)}
+                                onMouseLeave={() => this.props.setSelected('')}>{ word }</span>, ' ');
         }
       });
     }
     let percent = Math.floor(this.props.found.length / this.props.words.length * 100);
     return (
-      <div className="panel score-card">
+      <div className="panel score-card animated slideInRight">
         <div className="panel-heading">
           { this.props.len }-letter
         </div>

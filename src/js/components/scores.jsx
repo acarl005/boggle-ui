@@ -23,7 +23,8 @@ const Scores = React.createClass({
       if (foundGroups[len]) {
         score += points[len] * foundGroups[len].length;
       }
-      scoreCards.push(<ScoreCard len={len} key={len} found={foundGroups[len] || []} words={wordGroups[len]} finished={this.props.finished}/>);
+      scoreCards.push(<ScoreCard len={len} key={len} found={foundGroups[len] || []} words={wordGroups[len]}
+                                 finished={this.props.finished} setSelected={this.props.setSelected} />);
     }
     return (
       <div>

@@ -58,15 +58,34 @@ const Board = React.createClass({
         </button>
       );
     }
+    let form;
+    if (this.props.start && !this.props.finished) {
+      let addon = <span className="input-group-addon danger" title="not a word in the board"><span className="glyphicon glyphicon-remove" /></span>;
+      if (this.props.found.has(this.props.selected.toUpperCase())) {
+        addon = <span className="input-group-addon warning" title="already found word"><span className="glyphicon glyphicon-warning-sign" /></span>;
+      }
+      else if (this.props.words.has(this.props.selected.toUpperCase())) {
+        addon = <span className="input-group-addon success" title="nice find!"><span className="glyphicon glyphicon-ok" /></span>;
+      }
+      else if (!this.props.selected) {
+        addon = <span className="input-group-addon">...</span>;
+      }
+      form = (
+        <form id="word-form" onSubmit={this.checkIfWordInBoard} ref="form" className="animated slideInLeft">
+          <div className="input-group">
+            <input className="form-control" id="word-input" type="text" name="word" pattern="[a-zA-Z]+"
+                   onChange={this.selectWord} onKeyPress={this.validateKey} placeholder="Enter words here!"/>
+            { addon }
+          </div>
+        </form>
+      );
+    }
     return (
-      <div>
+      <div className="board-wrap">
         <div id="board">
           { buttons }
         </div>
-        <form id="word-form" onSubmit={this.checkIfWordInBoard} ref="form">
-          <input id="word-input" type="text" name="word" pattern="[a-zA-Z]+"
-                 onChange={this.selectWord} onKeyPress={this.validateKey} />
-        </form>
+        { form }
       </div>
     );
   }

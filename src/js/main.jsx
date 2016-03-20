@@ -35,6 +35,7 @@ const Game = React.createClass({
 
   startGame: function() {
     let query = qs.parse(location.search.slice(1));
+    if (query.board.length !== 16) delete query.board;
     socket.emit('start', query.board);
     this.setState({ start: Date.now(), found: Immutable.Set(), finished: false });
   },

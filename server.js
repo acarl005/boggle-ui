@@ -6,7 +6,7 @@ const http = require('http');
 const compress = require('compression');
 const server = http.Server(app);
 const io = require('socket.io')(server);
-const Boggle = require('solve-boggle');
+const Boggle = require('solve-boggle'); // module I wrote for solving boggle!
 
 io.on('connection', socket => {
   console.log('a user connected');
@@ -18,7 +18,11 @@ io.on('connection', socket => {
     socket.destroy();
   });
   socket.on('start', letters => {
-    socket.boggle = new Boggle(letters ? letters : undefined);
+    try {
+      socket.boggle = new Boggle(letters ? letters : undefined);
+    } catch(err) {
+      socket.boggle = new Boggle();
+    }
     io.emit('letters', socket.boggle.board.map(arr => arr.join('')).join(''));
     socket.boggle.solve(words => {
       io.emit('solution', words);

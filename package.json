@@ -20,6 +20,7 @@
   "homepage": "https://github.com/acarl005/boggle-ui#readme",
   "dependencies": {
     "compression": "^1.6.1",
+    "express": "^4.13.4",
     "immutable": "^3.7.6",
     "jquery": "^2.2.1",
     "lodash": "^4.6.1",

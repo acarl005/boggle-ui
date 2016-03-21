@@ -1,6 +1,6 @@
 const React = require('react');
 const DigitalNumbers = require('./react-digital-numbers');
-let pid;
+let pid, prevTick;
 
 const Clock = React.createClass({
 
@@ -17,10 +17,20 @@ const Clock = React.createClass({
       this.props.setFinished(true);
       return pid = null;
     }
+    // this is a weird looking timeout right? shouldn't it just be 1000ms? If you set it to 1000 then it will be around 1002 to 1006 because it has to wait for the event loop.
+    // I'm correcting for this by measuring how long it was since the previous tick, so if it took 1006ms the previous time, wait only 994ms this time.
+    let timeout;
+    let timeDiff = Date.now() - prevTick;
+    if (timeDiff > 1000) {
+      timeout = 2000 - timeDiff;
+    } else {
+      timeout = 1000;
+    }
+    prevTick = Date.now();
     pid = setTimeout(() => {
       pid = null;
       this.setState({ remaining: this.state.remaining - 1000 });
-    }, 1000);
+    }, timeout);
   },
 
   render: function() {

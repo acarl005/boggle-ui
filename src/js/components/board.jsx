@@ -73,7 +73,7 @@ const Board = React.createClass({
       form = (
         <form id="word-form" onSubmit={this.checkIfWordInBoard} ref="form" className="animated slideInLeft">
           <div className="input-group">
-            <input className="form-control" id="word-input" type="text" name="word" pattern="[a-zA-Z]+"
+            <input className="form-control" id="word-input" type="text" name="word" pattern="[a-zA-Z]+" autoFocus
                    onChange={this.selectWord} onKeyPress={this.validateKey} placeholder="Enter words here!"/>
             { addon }
           </div>

@@ -41,7 +41,6 @@ const Game = React.createClass({
   },
 
   setFinished: function(finished) {
-    if (finished)
     this.setState({ finished });
   },
 

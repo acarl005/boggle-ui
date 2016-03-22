@@ -65,6 +65,7 @@ position:absolute;
 transition:0.25s;
 }
 
+.react-digital-nums .digits .zero span,
 .react-digital-nums .digits .one span,
 .react-digital-nums .digits .two span,
 .react-digital-nums .digits .three span,

@@ -23,9 +23,9 @@ io.on('connection', socket => {
     } catch(err) {
       socket.boggle = new Boggle();
     }
-    io.emit('letters', socket.boggle.board.map(arr => arr.join('')).join(''));
+    socket.emit('letters', socket.boggle.board.map(arr => arr.join('')).join(''));
     socket.boggle.solve(words => {
-      io.emit('solution', words);
+      socket.emit('solution', words);
     });
   });
 });

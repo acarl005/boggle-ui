@@ -9,17 +9,16 @@ const io = require('socket.io')(server);
 const Boggle = require('solve-boggle'); // module I wrote for solving boggle!
 
 io.on('connection', socket => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
   socket.on('error', err => {
     console.error(err);
-    socket.destroy();
+    socket.disconnect();
   });
-  socket.on('start', letters => {
+  socket.on('start', data => {
+    if (socket.room && data.startOtherPlayersGames) {
+      socket.to(socket.room).broadcast.emit('startGame');
+    }
     try {
-      socket.boggle = new Boggle(letters ? letters : undefined);
+      socket.boggle = new Boggle(data.letters ? data.letters : undefined);
     } catch(err) {
       socket.boggle = new Boggle();
     }
@@ -27,6 +26,10 @@ io.on('connection', socket => {
     socket.boggle.solve(words => {
       socket.emit('solution', words);
     });
+  });
+  socket.on('join', room => {
+    socket.room = room;
+    socket.join(room);
   });
 });
 

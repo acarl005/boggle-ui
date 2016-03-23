@@ -1,6 +1,13 @@
 const React = require('react');
 let $board;
 
+const dice = [
+  'AAEEGN', 'ABBJOO', 'ACHOPS', 'AFFKPS',
+  'AOOTTW', 'CIMOTU', 'DEILRX', 'DELRVY',
+  'DISTTY', 'EEGHNW', 'EEINSU', 'EHRTVW',
+  'EIOSST', 'ELRTTY', 'HIMNUQ', 'HLNNRZ',
+];
+
 const Board = React.createClass({
 
   selectWord: function(e) {
@@ -48,6 +55,20 @@ const Board = React.createClass({
     input.dispatchEvent(event);
   },
 
+  startMultiplayer: function() {
+    function roll(dice) {
+      let diceIndex = Math.floor(Math.random() * dice.length);
+      let die = dice.splice(diceIndex, 1)[0];
+      let stringIndex = Math.floor(Math.random() * die.length);
+      return die[stringIndex];
+    }
+    var letters = '';
+    for (var i = 0; i < 16; i++) {
+      letters += roll(dice);
+    }
+    location.replace('/?board=' + letters);
+  },
+
   render: function() {
     let buttons = [];
     for (let i = 0; i < 16; i++) {
@@ -58,7 +79,7 @@ const Board = React.createClass({
         </button>
       );
     }
-    let form;
+    let form, multiplayer;
     if (this.props.start && !this.props.finished) {
       let addon = <span className="input-group-addon danger" title="not a word in the board"><span className="glyphicon glyphicon-remove" /></span>;
       if (this.props.found.has(this.props.selected.toUpperCase())) {
@@ -80,11 +101,18 @@ const Board = React.createClass({
         </form>
       );
     }
+    else if (!query.board) {
+      multiplayer = <button onClick={this.startMultiplayer} className="btn btn-lg btn-info btn3d">Multiplayer</button>;
+    }
+    else {
+      multiplayer = <div><p>Copy your URL and have the other player(s) visit it.</p><p>Press "Start" when everyone is ready.</p></div>
+    }
     return (
       <div className="board-wrap">
         <div id="board">
           { buttons }
         </div>
+        { multiplayer }
         { form }
       </div>
     );

@@ -3,11 +3,15 @@ const Clock = require('./clock');
 
 const Controls = React.createClass({
 
+  pressStart: function() {
+    this.props.startGame(true);
+  },
+
   render: function() {
     let button;
     if (this.props.finished) {
       button = (
-        <button id="start" className="btn btn3d btn-primary btn-lg" onClick={this.props.startGame}>
+        <button id="start" className="btn btn3d btn-primary btn-lg" onClick={this.pressStart}>
           <span className="glyphicon glyphicon-time"></span>
           {' '}Start
         </button>

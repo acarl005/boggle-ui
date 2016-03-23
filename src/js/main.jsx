@@ -11,6 +11,9 @@ const Controls = require('./components/controls');
 const Board = require('./components/board');
 const Scores = require('./components/scores');
 
+window.query = qs.parse(location.search.slice(1));
+if (query.board && query.board.length !== 16) delete query.board;
+
 const Game = React.createClass({
 
   getInitialState: function() {
@@ -33,10 +36,11 @@ const Game = React.createClass({
     this.setState({ found: newFound });
   },
 
-  startGame: function() {
-    let query = qs.parse(location.search.slice(1));
-    if (query.board && query.board.length !== 16) delete query.board;
-    socket.emit('start', query.board);
+  startGame: function(startOtherPlayersGames) {
+    socket.emit('start', {
+      letters: query.board,
+      startOtherPlayersGames
+    });
     this.setState({ start: Date.now(), found: Immutable.Set(), finished: false });
   },
 
@@ -47,6 +51,10 @@ const Game = React.createClass({
   componentWillMount: function() {
     socket.on('letters', letters => this.setState({ letters }));
     socket.on('solution', words => this.setState({ words: Immutable.Set(words) }));
+    if (query.board) {
+      socket.emit('join', query.board);
+      socket.on('startGame', () => this.startGame(false));
+    }
   },
 
   render: function() {

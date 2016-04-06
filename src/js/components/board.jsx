@@ -101,8 +101,8 @@ const Board = React.createClass({
         </form>
       );
     }
-    else if (!query.board) {
-      multiplayer = <button onClick={this.startMultiplayer} className="btn btn-lg btn-info btn3d">Multiplayer</button>;
+    else if (!query.board || (!!this.props.start && !!this.props.finished)) {
+      multiplayer = <button onClick={this.startMultiplayer} className="btn btn-lg btn-info btn3d">New Multiplayer Game</button>;
     }
     else {
       multiplayer = <div><p>Copy your URL and have the other player(s) visit it.</p><p>Press "Start" when everyone is ready.</p></div>
